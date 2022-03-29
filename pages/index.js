@@ -1,7 +1,8 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { CanvasClient } from "@uniformdev/canvas";
-import { Composition } from "@uniformdev/canvas-react";
+import { Composition, Slot } from "@uniformdev/canvas-react";
+import resolveRenderer from "../lib/resolveRenderer";
 
 export async function getStaticProps() {
   const client = new CanvasClient({
@@ -20,7 +21,7 @@ export async function getStaticProps() {
 
 export default function Home({ composition }) {
   return (
-    <Composition data={composition}>
+    <Composition data={composition} resolveRenderer={resolveRenderer}>
       <div className={styles.container}>
         <Head>
           <title>{composition.parameters.title?.value}</title>
@@ -28,13 +29,13 @@ export default function Home({ composition }) {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>[header]</h1>
+          <Slot name="header" />
 
-          <p className={styles.description}>[body]</p>
+          <Slot name="body" />
         </main>
 
         <footer className={styles.footer}>
-          <div>[footer]</div>
+          <Slot name="footer" />
         </footer>
       </div>
     </Composition>
